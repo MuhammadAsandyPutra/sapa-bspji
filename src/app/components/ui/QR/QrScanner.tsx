@@ -20,20 +20,26 @@ export default function QrScanner({ onFinish, onSuccess }: QrScannerProps) {
         qrCodeRef.current = qrCode
 
         requestAnimationFrame(() => {
-            qrCode
-                .start(
-                    { facingMode: "environment" },
-                    {
-                        fps: 10,
-                        qrbox: { width: 250, height: 250 },
-                        disableFlip: true,
+            qrCode.start(
+                { facingMode: "environment" },
+                {
+                    fps: 10,
+                    qrbox: (viewfinderWidth, viewfinderHeight) => {
+                        const minEdge = Math.min(viewfinderWidth, viewfinderHeight)
+                        const size = Math.floor(minEdge * 0.8)
+                        return { width: size, height: size }
                     },
-                    (decodedText) => {
-                        onSuccess?.(decodedText)
-                        handleStop(true)
-                    },
-                    () => { }
-                )
+                    disableFlip: true,
+                },
+                (decodedText) => {
+                    onSuccess?.(decodedText)
+                    handleStop(true)
+                },
+                () => {
+                    // QR code not found in this frame
+                }
+            )
+
                 .catch((err) => {
                     console.error("Camera error:", err)
                 })
