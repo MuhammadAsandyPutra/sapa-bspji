@@ -263,15 +263,19 @@ export default function Page() {
                         ) : (
                             <>
                                 <QrScanner
-                                    onSuccess={(result) => {
+                                    onSuccess={async (result) => {
                                         console.log("Hasil QR:", result)
-                                        // TODO: nanti kirim ke backend Django
+                                        // await kirim ke backend kalau perlu
                                     }}
                                     onFinish={() => {
-                                        setScan(false)
-                                        setOpen(false)
+                                        // Delay sedikit supaya stopCamera selesai dulu
+                                        setTimeout(() => {
+                                            setScan(false)
+                                            setOpen(false)
+                                        })
                                     }}
                                 />
+
 
                             </>
                         )}

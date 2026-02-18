@@ -11,7 +11,7 @@ export default function Page() {
                 </p>
             </div>
 
-            {/* Daftar Sertifikat */}
+            {/* Daftar Sertifikat - Dummys */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Sertifikat Item */}
                 <div className="bg-white rounded-lg shadow p-5">
