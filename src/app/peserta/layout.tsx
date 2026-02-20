@@ -39,6 +39,16 @@ export default function PesertaLayout({
     const notifRef = useRef<HTMLDivElement>(null);
 
     const unreadCount = notifications.filter(n => !n.read).length;
+    const markAllAsRead = () => {
+        setNotifications(prev =>
+            prev.map(n => ({ ...n, read: true }))
+        );
+    };
+
+    const clearAllNotifications = () => {
+        setNotifications([]);
+    };
+
 
     // Auto close dropdown jika klik luar
     useEffect(() => {
@@ -149,42 +159,68 @@ export default function PesertaLayout({
                         {notifOpen && (
                             <div className="absolute right-0 top-10 w-72 bg-white shadow-xl rounded-lg border z-50">
 
-                                <div className="p-3 border-b font-semibold text-sm">
+                                {/* Header */}
+                                <div className="p-3 border-b font-semibold text-sm text-black">
                                     Notifikasi
                                 </div>
 
-                                {notifications.length === 0 ? (
-                                    <div className="p-4 text-sm text-gray-500">
-                                        Tidak ada notifikasi
-                                    </div>
-                                ) : (
-                                    notifications.map((notif) => (
-                                        <div
-                                            key={notif.id}
-                                            onClick={() => {
-                                                setNotifications(prev =>
-                                                    prev.map(n =>
-                                                        n.id === notif.id
-                                                            ? { ...n, read: true }
-                                                            : n
-                                                    )
-                                                );
-                                            }}
-                                            className={`px-4 py-3 text-sm cursor-pointer hover:bg-gray-100 transition text-black ${!notif.read
-                                                ? "bg-blue-50 font-semibold"
-                                                : "text-gray-800"
-                                                }`}
-                                        >
-                                            {notif.message}
+                                {/* List */}
+                                <div className="max-h-64 overflow-y-auto">
+                                    {notifications.length === 0 ? (
+                                        <div className="p-4 text-sm text-gray-500">
+                                            Tidak ada notifikasi
                                         </div>
+                                    ) : (
+                                        notifications.map((notif) => (
+                                            <div
+                                                key={notif.id}
+                                                onClick={() => {
+                                                    setNotifications(prev =>
+                                                        prev.map(n =>
+                                                            n.id === notif.id
+                                                                ? { ...n, read: true }
+                                                                : n
+                                                        )
+                                                    );
+                                                }}
+                                                className={`px-4 py-3 text-sm cursor-pointer hover:bg-gray-100 transition text-black ${!notif.read
+                                                    ? "bg-blue-50 font-semibold"
+                                                    : "text-gray-800"
+                                                    }`}
+                                            >
+                                                {notif.message}
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
 
-                                    ))
+                                {/* Footer Buttons */}
+                                {notifications.length > 0 && (
+                                    <div className="p-3 border-t flex justify-between text-xs">
+                                        {unreadCount > 0 ? (
+                                            <button
+                                                onClick={markAllAsRead}
+                                                className="text-blue-600 hover:underline"
+                                            >
+                                                Tandai semua sudah dibaca
+                                            </button>
+                                        ) : (
+                                            <div />
+                                        )}
+
+                                        <button
+                                            onClick={clearAllNotifications}
+                                            className="text-red-500 hover:underline"
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         )}
 
                         <div className="text-sm text-gray-600">
-                            Halo, Peserta
+                            Halo, <span className="text-sm text-blue-600"> Asandy</span>
                         </div>
                     </div>
                 </header>
